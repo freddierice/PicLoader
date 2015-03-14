@@ -14,4 +14,11 @@
 #define HTTP_BIND_PORT 9090
 #define HTTPS_BIND_PORT 9091
 
+typedef int file_type;
+
+#define FILE_NONE 0
+#define FILE_JPEG 1
+#define FILE_GIF  2
+#define FILE_PNG  3
+
 #endif /* _CONFIG_H_ */

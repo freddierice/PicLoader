@@ -24,6 +24,9 @@ int bindAddress();
 void *httpHandler(void *);
 void *httpsHandler(void *);
 
+int isPicture(char *b);
+int isGet(char *b);
+
 int main(int argc, char **argv){
     
     int status;
@@ -167,8 +170,7 @@ void* httpsHandler(void *arg) {
     int sockfd;
     
     sockfd = *((int *)arg);
-
-    dup2(sockfd,STDOUT_FILENO); 
+    
     
     free(arg);
     return 0;
@@ -176,12 +178,37 @@ void* httpsHandler(void *arg) {
 
 void* httpHandler(void *arg) {
     int sockfd;
+    char buf[4096];
+    char *host;
+    file_type ft;
 
     sockfd = *((int *)arg);
-    
-    dup2(sockfd,STDOUT_FILENO);
 
+    read(sockfd, buf, 4096*sizeof(char));
+
+    if(!isGet(buf))
+        goto done;
+
+    if(!isPicture(buf))
+        goto done;
+
+done:
     free(arg);
     return 0;
 }
 
+
+// make sure it is a get request
+int isGet(char *b){
+
+    if(b[0] != 'G' || b[1] != 'E' || b[2] != 'T' || b[3] != ' '){
+        return 0;
+    }
+
+    return 1;
+}
+
+int isPicture(char *b){
+
+    return 0;
+}
